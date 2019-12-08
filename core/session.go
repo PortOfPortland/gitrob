@@ -58,7 +58,9 @@ func (s *Session) Start() {
   s.InitThreads()
   s.InitGithubAccessToken()
   s.InitGithubClient()
-  s.InitRouter()
+  if *s.Options.NoWeb != true {
+     s.InitRouter()
+  }
 }
 
 func (s *Session) Finish() {
