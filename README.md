@@ -7,6 +7,10 @@
 
 # Gitrob: Putting the Open Source in OSINT
 
+NOTE: This repo is forked from the main repo at https://github.com/michenriksen/gitrob, but includes two additional features:
+* The ability to pull code from private repos over HTTPS (major shout out to @betobrandao for the majority of this code)
+* The ability to disable the web server from running via a new command-line switch "noweb"
+
 Gitrob is a tool to help find potentially sensitive files pushed to public repositories on Github. Gitrob will clone repositories belonging to a user or organization down to a configurable depth and iterate through the commit history and flag files that match signatures for potentially sensitive files. The findings will be presented through a web interface for easy browsing and analysis.
 
 ## Usage
@@ -36,6 +40,8 @@ Gitrob is a tool to help find potentially sensitive files pushed to public repos
     Suppress all output except for errors
 -threads int
     Number of concurrent threads (default number of logical CPUs)
+-noweb
+    Will not start the web server to display results (will exit immediately after display results)
 ```
 
 ### Saving session to a file
