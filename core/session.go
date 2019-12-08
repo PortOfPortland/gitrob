@@ -17,8 +17,6 @@ import (
 )
 
 const (
-  AccessTokenEnvVariable = "GITROB_ACCESS_TOKEN"
-
   StatusInitializing = "initializing"
   StatusGathering    = "gathering"
   StatusAnalyzing    = "analyzing"

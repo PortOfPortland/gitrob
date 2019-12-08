@@ -7,6 +7,10 @@ import (
   "strings"
 )
 
+const (
+  AccessTokenEnvVariable = "GITROB_ACCESS_TOKEN"
+)
+
 var NewlineRegex = regexp.MustCompile(`\r?\n`)
 
 func FileExists(path string) bool {

@@ -53,6 +53,44 @@ func GetUserOrOrganization(login string, client *github.Client) (*GithubOwner, e
   }, nil
 }
 
+func GetRepositoriesFromOrganization(login *string, client *github.Client) ([]*GithubRepository, error) {
+  var allRepos []*GithubRepository
+  loginVal := *login
+  ctx := context.Background()
+  opt := &github.RepositoryListByOrgOptions{
+    Type: "sources",
+  }
+
+  for {
+    repos, resp, err := client.Repositories.ListByOrg(ctx, loginVal, opt)
+    if err != nil {
+      return allRepos, err
+    }
+    for _, repo := range repos {
+      if !*repo.Fork {
+        r := GithubRepository{
+          Owner:         repo.Owner.Login,
+          ID:            repo.ID,
+          Name:          repo.Name,
+          FullName:      repo.FullName,
+          CloneURL:      repo.CloneURL,
+          URL:           repo.HTMLURL,
+          DefaultBranch: repo.DefaultBranch,
+          Description:   repo.Description,
+          Homepage:      repo.Homepage,
+        }
+        allRepos = append(allRepos, &r)
+      }
+    }
+    if resp.NextPage == 0 {
+      break
+    }
+    opt.Page = resp.NextPage
+  }
+
+  return allRepos, nil
+}
+
 func GetRepositoriesFromOwner(login *string, client *github.Client) ([]*GithubRepository, error) {
   var allRepos []*GithubRepository
   loginVal := *login

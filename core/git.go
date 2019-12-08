@@ -3,9 +3,11 @@ package core
 import (
   "fmt"
   "io/ioutil"
+  "os"
 
   "gopkg.in/src-d/go-git.v4"
   "gopkg.in/src-d/go-git.v4/plumbing"
+  "gopkg.in/src-d/go-git.v4/plumbing/transport/http"
   "gopkg.in/src-d/go-git.v4/plumbing/object"
   "gopkg.in/src-d/go-git.v4/utils/merkletrie"
 )
@@ -21,8 +23,15 @@ func CloneRepository(url *string, branch *string, depth int) (*git.Repository, s
   if err != nil {
     return nil, "", err
   }
+
+  accessToken := os.Getenv(AccessTokenEnvVariable)
+
   repository, err := git.PlainClone(dir, false, &git.CloneOptions{
     URL:           urlVal,
+    Auth: &http.BasicAuth{
+        Username: "username", 
+        Password: accessToken,
+    },
     Depth:         depth,
     ReferenceName: plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", branchVal)),
     SingleBranch:  true,
